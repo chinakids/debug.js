@@ -66,24 +66,30 @@
     render = (msg) ->
       text = ""
       arr = []
-
+      
       if isArray msg
-        for item in msg
-          if typeof(item) is "object"
-            arr.push render(item)
-            text = "[" + arr.join(',') + "]"
-          else
-            arr.push "#{item}"
-            text = "[" + arr.join(',') + "]"
+        if JSON.stringify
+          text = JSON.stringify msg
+        else
+          for item in msg
+            if typeof(item) is "object"
+              arr.push render(item)
+              text = "[" + arr.join(',') + "]"
+            else
+              arr.push "#{item}"
+              text = "[" + arr.join(',') + "]"
 
       else if isObejct msg
-        for item of msg
-          if typeof(msg[item]) is "object"
-            arr.push "#{item}: " + render(msg[item])
-            text = "{" + arr.join(',') + "}"
-          else
-            arr.push "#{item}: #{msg[item]}"
-            text = "{" + arr.join(',') + "}"
+        if JSON.stringify
+          text = JSON.stringify msg
+        else
+          for item of msg
+            if typeof(msg[item]) is "object"
+              arr.push "#{item}: " + render(msg[item])
+              text = "{" + arr.join(',') + "}"
+            else
+              arr.push "#{item}: #{msg[item]}"
+              text = "{" + arr.join(',') + "}"
 
       else
         text = String(msg)
